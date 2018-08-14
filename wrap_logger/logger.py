@@ -129,8 +129,8 @@ class Logger(logging.Logger):
                     
                     return_value = func(*args, **kwargs) # Call argument function after logging entry
                     
+                    self.make_log(log_level_key, f'Exited Method {func.__name__} With {return_value}') # log
                     if new_name is not None: self.set_name(previous_name) # Then revert to previous name
-                    self.make_log(log_level_key, f'Exited Method {func.__name__}') # State function exit
                     
                     return return_value # Give result of function call after making logs
             return wrapped
