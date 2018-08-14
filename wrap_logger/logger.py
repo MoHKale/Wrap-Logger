@@ -21,6 +21,8 @@ class Logger(logging.Logger):
             logger = logging.getLogger(__name__)
             logger.info('Hello World!')
             
+            >>> INFO:__main__:Hello World!
+            
     Decorate a function to log upon call
             
             logger = logging.getLogger(__name__)
@@ -31,6 +33,9 @@ class Logger(logging.Logger):
             
             foo() # Will now log hello world
             foo() # Will log hello world again
+    
+            >>> INFO:__main__:Hello World!
+            >>> INFO:__main__:Hello World!
     
     Updating a loggers name upon the execution of a method
     
