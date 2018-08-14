@@ -139,7 +139,7 @@ class Logger(logging.Logger):
     def set_name(self, new_name):
         self.name = new_name
         
-    @classmethod
+    @staticmethod
     def format_params(*args, **kwargs):
         if len(args) == 0 and len(kwargs) == 0: return '()' # is empty, I.E. No arguments
         else:
