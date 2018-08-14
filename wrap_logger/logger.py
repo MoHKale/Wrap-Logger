@@ -124,8 +124,8 @@ class Logger(logging.Logger):
                 else: # Only bother going through  tasking operations when logging
                     formatted_params = self.format_params(*args, **kwargs) # Format inputted parameters
                     
-                    self.make_log(log_level_key, f'Entered Method {func.__name__} With {formatted_params}')
                     if new_name is not None: self.set_name(new_name) # then update name to argument name
+                    self.make_log(log_level_key, f'Entered Method {func.__name__} With {formatted_params}')
                     
                     return_value = func(*args, **kwargs) # Call argument function after logging entry
                     
