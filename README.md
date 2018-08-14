@@ -29,6 +29,7 @@ foo() # Will log hello world again
 ```
 
 > INFO:__main__:Hello World!
+
 > INFO:__main__:Hello World!
 
 ### Updating a loggers name upon the execution of a method
@@ -52,7 +53,9 @@ foo()
 ```
 
 > DEBUG:Foo:I'm Outputting From Foo
+
 > INFO:Bar:I'm Outputting From Bar
+
 > DEBUG:Foo:I'm Outputting From Foo
     
 ### Logging Upon The Entry Of a Function
@@ -78,8 +81,13 @@ logger.debug('Program Ending')
 ```
     
 > DEBUG:__main__:Program Started
+
 > DEBUG:foo:Entered Method foo With (<__main__.FooBar object at 0x000000555CAA1710>, 1, 2, )
+
 > DEBUG:bar:Entered Method bar With (<__main__.FooBar object at 0x000000555CAA1710>, 2, 1, )
+
 > DEBUG:bar:Exited Method bar With 3
+
 > DEBUG:foo:Exited Method foo With 3
+
 > DEBUG:__main__:Program Ending
