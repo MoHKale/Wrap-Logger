@@ -150,9 +150,3 @@ class Logger(logging.Logger):
     def make_log(self, level_key:str, *args, **kwargs):
         """Logs at a given log level (represented as a string)"""
         return getattr(self, level_key.lower())(*args, **kwargs)
-
-
-
-
-
-
