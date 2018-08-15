@@ -111,7 +111,7 @@ class Logger(logging.Logger):
             Decorator Method Which Performs The Desired Function After Changing Name"""
         return WrapLoggerDecorators.do_before_func(lambda: self.set_name(new_name))
         
-    def wrap__entry(self, log_level_key: str='DEBUG', new_name: str=None):
+    def wrap__entry(self, log_level_key: str='DEBUG', new_name: str=None, include_result=True):
         """Logs When Entering & Exiting a Given Function.
         
         Parameters
@@ -136,7 +136,10 @@ class Logger(logging.Logger):
                     
                     return_value = func(*args, **kwargs) # Call argument function after logging entry
                     
-                    self.make_log(log_level_key, f'Exited Method {func.__name__} With {return_value}') # log
+                    if include_result:
+                        self.make_log(log_level_key, f'Exited Method {func.__name__} With {return_value}') # log
+                    else:
+                        self.make_log(log_level_key, f'Exited Method {func.__name__}')
                     if new_name is not None: self.set_name(previous_name) # Then revert to previous name
                     
                     return return_value # Give result of function call after making logs
