@@ -131,26 +131,58 @@ class Logger(logging.Logger):
                 else: # Only bother going through  tasking operations when logging
                     #region Logger
                     if new_name is not None: self.set_name(new_name) # then update name to argument name
-                    if include_params:
-                        formatted_params = self.format_params(*args, **kwargs) # Format inputted parameters
-                        self.make_log(log_level_key, f'Entered Method {func.__name__} With {formatted_params}')
-                    else:
-                        self.make_log(log_level_key, f'Entered Method {func.__name__}')
+                    
+                    #region Make Log
+                    entry_message = f'Entered Method {func.__name__}' if not include_params else (
+                        f'Entered Method {func.__name__} With '+self.format_params(*args, **kwargs)
+                    )
+                    
+                    self.make_log(log_level_key, entry_message) # Log entry message at desired level
+                    #endregion
+                    
                     #endregion
                         
                     return_value = func(*args, **kwargs) # Call argument function after logging entry
                     
                     #region Logger
-                    if include_result:
-                        self.make_log(log_level_key, f'Exited Method {func.__name__} With {return_value}') # log
-                    else:
-                        self.make_log(log_level_key, f'Exited Method {func.__name__}')
+                    
+                    #region Make Log
+                    exit_message = f'Exited Method {func.__name__}' if not include_result else (
+                        f'Exited Method {func.__name__} With {return_value}' # include return
+                    )
+                    
+                    self.make_log(log_level_key, exit_message) # Log exit message at desired level
+                    #endregion
+                    
                     if new_name is not None: self.set_name(previous_name) # Then revert to previous name
                     #endregion
                     
                     return return_value # Give result of function call after making logs
             return wrapped
         return decorator
+        
+    def wrap__name_during_entry(self, new_name):
+        """Changes Logger Name During The Execution Of a Method
+        
+        Therefore any logs within the method will use this argument name.
+        
+        Parameters
+        ----------
+        new_name : str
+            Name that logger should be changed to during execution."""
+        def decorator(func):
+            @wraps(func)
+            def wrapped(*args, **kwargs):
+                previous_name = self.name # Store before updating
+                self.set_name(new_name) # Set to desired name
+                
+                return_value = func(*args, **kwargs) # execute
+                
+                self.set_name(previous_name) # Reset after running
+                return return_value # After name has been updated
+            return wrapped
+        return decorator
+        
     
     def set_name(self, new_name):
         self.name = new_name
