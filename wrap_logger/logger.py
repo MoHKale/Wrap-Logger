@@ -111,7 +111,7 @@ class Logger(logging.Logger):
             Decorator Method Which Performs The Desired Function After Changing Name"""
         return WrapLoggerDecorators.do_before_func(lambda: self.set_name(new_name))
         
-    def wrap__entry(self, log_level_key: str='DEBUG', new_name: str=None, include_result=True):
+    def wrap__entry(self, log_level_key: str='DEBUG', new_name: str=None, include_args=True, include_result=True):
         """Logs When Entering & Exiting a Given Function.
         
         Parameters
@@ -129,18 +129,24 @@ class Logger(logging.Logger):
                 
                 if self.disabled: return func(*args, **kwargs) # When Disabled
                 else: # Only bother going through  tasking operations when logging
-                    formatted_params = self.format_params(*args, **kwargs) # Format inputted parameters
-                    
+                    #region Logger
                     if new_name is not None: self.set_name(new_name) # then update name to argument name
-                    self.make_log(log_level_key, f'Entered Method {func.__name__} With {formatted_params}')
-                    
+                    if include_args:
+                        formatted_params = self.format_params(*args, **kwargs) # Format inputted parameters
+                        self.make_log(log_level_key, f'Entered Method {func.__name__} With {formatted_params}')
+                    else:
+                        self.make_log(log_level_key, f'Entered Method {func.__name__}')
+                    #endregion
+                        
                     return_value = func(*args, **kwargs) # Call argument function after logging entry
                     
+                    #region Logger
                     if include_result:
                         self.make_log(log_level_key, f'Exited Method {func.__name__} With {return_value}') # log
                     else:
                         self.make_log(log_level_key, f'Exited Method {func.__name__}')
                     if new_name is not None: self.set_name(previous_name) # Then revert to previous name
+                    #endregion
                     
                     return return_value # Give result of function call after making logs
             return wrapped
