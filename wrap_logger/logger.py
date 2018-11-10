@@ -148,7 +148,7 @@ class Logger(logging.Logger):
                     
                     #region Make Log
                     exit_message = f'Exited Method {func.__name__}' if not include_result else (
-                        f'Exited Method {func.__name__} With {repr(return_value)}' # include return
+                        f'Exited Method {func.__name__} With : {return_value} :' # include return
                     )
                     
                     self.make_log(log_level_key, exit_message) # Log exit message at desired level
